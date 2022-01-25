@@ -3,7 +3,7 @@
 
 # Path to an ENSEMBL FASTA reference transcriptome file/URL to be used for read mapping (local, FTP or HTTP)
 
-transcriptome_ref: "/home/tleonardi/programming/bioinformatics/MetaCompore/fast5_subset/reference_transcriptome_selected.fa"
+transcriptome_ref: "data/reference/ATCC11775_23S.fa"
 
 ##### Conditional execution of pipeline #####
 

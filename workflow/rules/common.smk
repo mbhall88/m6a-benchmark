@@ -13,6 +13,7 @@ from snakemake.logging import logger
 from snakemake.io import load_configfile
 from snakemake.utils import validate
 
+
 ##### Input files validation functions #####
 
 def config_load_validate(configfile, schema):
