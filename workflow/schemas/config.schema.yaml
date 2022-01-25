@@ -1,0 +1,55 @@
+$schema: "http://json-schema.org/draft-06/schema#"
+
+description: snakemake configuration file
+
+type: object
+
+# possible entries of the config file and which type they should be
+properties:
+  transcriptome_ref:
+    type: string
+    description: Path to an ENSEMBL FASTA reference transcriptome file/URL to be used for read mapping (local, FTP or HTTP)
+properties:
+  gpu_acceleration:
+    type: boolean
+    description: Is true use gpus for basecalling (requires CUDA libs)
+properties:
+  nanocompore:
+    type: boolean
+    description: If True run nanocompore
+properties:
+  tombo:
+    type: boolean
+    description: If True run tombo
+properties:
+  differr:
+    type: boolean
+    description: If True run differr_nanopore_DRS
+properties:
+  eligos2:
+    type: boolean
+    description: If True run eligos2
+properties:
+  xpore:
+    type: boolean
+    description: If True run xpore
+properties:
+  mines:
+    type: boolean
+    description: If True run mines
+properties:
+  epinano:
+    type: boolean
+    description: If True run epinano
+
+# entries that have to be in the config file for successful validation
+required:
+  - transcriptome_ref
+  - gpu_acceleration
+  - nanocompore
+  - tombo
+  - differr
+  - eligos2
+  - xpore
+  - mines
+  - epinano

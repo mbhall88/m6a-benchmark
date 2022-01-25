@@ -1,0 +1,25 @@
+$schema: "http://json-schema.org/draft-06/schema#"
+
+description: Entry in the sample sheet
+
+# columns that the config/samples.tsv file can have and which type they should be
+properties:
+  sample_id:
+    type: [string, integer]
+    description: Sample name/identifier
+  condition:
+    type: string
+    description: Sample condition that will be compared during differential analysis (e.g. WT, KO)
+  replicate:
+    type: [string, integer]
+    description: Sample replicate id (e.g. 1,2,3 or A,B,C)
+  fast5_dir:
+    type: string
+    description: Path to directory containing fast5 files
+
+# columns that the config/samples.tsv file must have to pass schema validation
+required:
+  - sample_id
+  - condition
+  - replicate
+  - fast5_dir

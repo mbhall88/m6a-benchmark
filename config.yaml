@@ -1,0 +1,272 @@
+
+##### Source files #####
+
+# Path to an ENSEMBL FASTA reference transcriptome file/URL to be used for read mapping (local, FTP or HTTP)
+
+transcriptome_ref: "/home/tleonardi/programming/bioinformatics/MetaCompore/fast5_subset/reference_transcriptome_selected.fa"
+
+##### Conditional execution of pipeline #####
+
+gpu_acceleration: False
+quality_control: False
+nanocompore: True
+tombo: False
+differr: True
+eligos2: True
+mines: False
+xpore: False
+epinano: True
+
+##### Individual rules configuration #####
+
+# Input data parameters
+
+get_transcriptome:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+# Basecalling  parameters
+
+ont_guppy:
+    threads: 4
+    mem_mb: 6000
+    opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 4 --cpu_threads_per_caller 1"
+    # example GPU options if using gpu_basecalling instead
+    #opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 8 --gpu_runners_per_device 1 --device 'auto'"
+
+merge_fastq:
+    threads: 1
+    mem_mb: 1000
+    opt: "--remove_duplicates --min_len 100 --min_qual 7"
+
+# Alignment parameters
+
+minimap2_index:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+minimap2_align:
+    threads: 4
+    mem_mb: 1000
+    opt: "-a -L -x map-ont"
+
+alignmemt_prefilter:
+    threads: 1
+    mem_mb: 1000
+    opt: "--skip_unmapped --skip_secondary --skip_supplementary --index_reads --orientation '+' --min_read_len 100 --min_align_len 100 --min_mapq 10 --min_freq_identity 0.8"
+
+min_ref_coverage:
+    threads: 1
+    mem_mb: 1000
+    opt:
+        min_cov: 30
+
+alignmemt_postfilter:
+    threads: 1
+    mem_mb: 1000
+    opt: "--index_reads"
+
+alignmemt_merge:
+    threads: 4
+    mem_mb: 1000
+    opt: ""
+
+# QC parameters
+
+pycoQC:
+    threads: 1
+    mem_mb: 1000
+    opt: "--skip_coverage_plot --filter_calibration --filter_duplicated --min_pass_len 100 --min_pass_qual 7"
+
+# f5c parameters
+
+f5c_index:
+    threads: 4
+    mem_mb: 1000
+    opt: "--iop 4"
+
+f5c_eventalign:
+    threads: 4
+    mem_mb: 1000
+    opt: "-x laptop-low --rna --samples --signal-index --print-read-names --scale-events"
+
+# Nanocompore parameters
+
+nanocompore_eventalign_collapse:
+    threads: 4
+    mem_mb: 1000
+    opt: ""
+
+nanocompore_sampcomp:
+    threads: 4
+    mem_mb: 1000
+    opt: "--max_invalid_kmers_freq 0.2 --min_coverage 30 --downsample_high_coverage 5000 --min_ref_length 100 --comparison_methods GMM,KS --sequence_context 2 --sequence_context_weights harmonic --pvalue_thr 0.01 --logit"
+
+nanocompore_postprocess:
+    threads: 1
+    mem_mb: 1000
+    opt:
+        p_val_lim: 0.01
+        quantile_lim: 0.5
+        min_distance: 9
+
+# tombo parameters
+
+tombo_preprocess:
+    threads: 4
+    mem_mb: 1000
+    opt: ""
+
+tombo_level_sample_compare:
+    threads: 4
+    mem_mb: 1000
+    opt: "--minimum-test-reads 30 --fishers-method-context 2 --statistic-type ks --store-p-value"
+
+tombo_postprocess:
+    threads: 1
+    mem_mb: 1000
+    opt:
+        min_cov: 30
+        p_val_lim: 0.01
+        quantile_lim: 0.5
+        min_distance: 9
+
+# differr parameters
+
+differr_compare:
+    threads: 4
+    mem_mb: 1000
+    opt: "--normalise --max-depth 5000 --fdr-threshold 0.01 --median-expr-threshold 30 --min-expr-threshold 30"
+
+differr_postprocess:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+# eligos2 parameters
+
+eligos2_fasta_to_bed:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+eligos2_pair_diff_mod:
+    threads: 4
+    mem_mb: 1000
+    opt: "--oddR 0 --esb 0 --min_depth 30 --pval 1 --adjPval 1"
+
+eligos2_postprocess:
+    threads: 1
+    mem_mb: 1000
+    opt:
+        min_oddR: 1.2
+        min_esb: 0
+        min_cov: 30
+        max_adj_pval: 0.01
+        discard_homopolymers: True
+        ref_base: "A"
+
+# Mines parameters
+
+tombo_de_novo:
+    threads: 4
+    mem_mb: 1000
+    opt: "--rna --minimum-test-reads 30 --fishers-method-context 2"
+
+tombo_de_novo_text_output:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+mines_wig2bed:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+mines_cdna:
+    threads: 1
+    mem_mb: 1000
+    opt: ""
+
+mines_postprocess:
+    threads: 1
+    mem_mb: 1000
+    opt:
+        min_cov: 30
+
+
+# Epinano paramters
+# Could not find value `threads` for rule `ont_guppy_epinano` in config fileCould not find value `opt` for rule `ont_guppy_epinano` in config file
+
+ont_guppy_epinano:
+    threads: 4
+    mem_mb: 6000
+    opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 4 --cpu_threads_per_caller 1"
+    # example GPU options if using gpu_basecalling instead
+    #opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 8 --gpu_runners_per_device 1 --device 'auto'"
+
+merge_fastq_epinano:
+    threads: 1
+    mem_mb: 1000
+    opt: "--remove_duplicates --min_len 100 --min_qual 7"
+
+minimap2_align_epinano:
+    threads: 4
+    mem_mb: 1000
+    opt: "-a --MD -x map-ont"
+
+alignmemt_prefilter_epinano:
+    threads: 1
+    mem_mb: 1000
+    opt: "--skip_unmapped --skip_secondary --skip_supplementary --index_reads --orientation '+' --min_read_len 100 --min_align_len 100 --min_mapq 10 --min_freq_identity 0.8"
+
+min_ref_coverage_epinano:
+    threads: 1
+    mem_mb: 1000
+    opt:
+        min_cov: 30
+
+alignmemt_postfilter_epinano:
+    threads: 1
+    mem_mb: 1000
+    opt: "--index_reads"
+
+epinano_postprocess:
+    threads: 1
+    mem_mb: 1000
+
+alignmemt_merge_epinano:
+    threads: 4
+    mem_mb: 1000
+    opt: ""
+
+epinano_delta_variants:
+    threads: 1
+    mem_mb: 8000
+    opt:
+        min_cov: 30
+
+generate_transcriptome_picard_index:
+    mem_mb: 1000
+
+epinano_variants:
+    threads: 1
+    mem_mb: 8000
+
+epinano_filter_rrach_variants:
+    threads: 1
+    mem_mb: 1000
+
+epinano_gather_variants:
+    threads: 1
+    mem_mb: 1000
+
+epinano_predict:
+    threads: 1
+    mem_mb: 8000
+
+epinano_delta_predict:
+    threads: 1
+    mem_mb: 8000
