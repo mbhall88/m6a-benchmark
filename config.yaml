@@ -7,13 +7,13 @@ transcriptome_ref: "/home/tleonardi/programming/bioinformatics/MetaCompore/fast5
 
 ##### Conditional execution of pipeline #####
 
-gpu_acceleration: False
+gpu_acceleration: True
 quality_control: False
 nanocompore: True
-tombo: False
+tombo: True
 differr: True
 eligos2: True
-mines: False
+mines: True
 xpore: False
 epinano: True
 
@@ -31,9 +31,7 @@ get_transcriptome:
 ont_guppy:
     threads: 4
     mem_mb: 6000
-    opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 4 --cpu_threads_per_caller 1"
-    # example GPU options if using gpu_basecalling instead
-    #opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 8 --gpu_runners_per_device 1 --device 'auto'"
+    opt: "-c rna_r9.4.1_70bps_hac.cfg --records_per_fastq 0 --recursive --disable_pings --calib_detect --num_callers 8 --gpu_runners_per_device 1 --device cuda:all:100% --disable_qscore_filtering"
 
 merge_fastq:
     threads: 1
@@ -49,7 +47,7 @@ minimap2_index:
 
 minimap2_align:
     threads: 4
-    mem_mb: 1000
+    mem_mb: 12000
     opt: "-a -L -x map-ont"
 
 alignmemt_prefilter:

@@ -1,7 +1,6 @@
 __default__:
-  - "-P project2"
-  - "-W 1:05"
+  - "-E \"/nfs/research/zi/mbhall/Software/singularity_preexec_test/singularity_test.sh -x -t 20s /\""
 
-foo:
-  - "-P gpu"
-  - "-gpu 'gpu resources'"
+ont_guppy:
+  - "-q gpu"
+  - "-gpu 'num=1'"

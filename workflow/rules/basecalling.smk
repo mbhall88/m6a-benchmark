@@ -9,9 +9,9 @@ from os.path import join
 module_name="basecalling"
 
 if config["gpu_acceleration"]:
-    guppy_container="library://aleg/default/ont_guppy:gpu-4.2.2"
+    guppy_container="docker://quay.io/mbhall88/guppy-gpu:5.0.16"
 else:
-    guppy_container="library://aleg/default/ont_guppy:cpu-4.2.2"
+    guppy_container="docker://quay.io/mbhall88/guppy-cpu:5.0.16"
 
 rule_name="ont_guppy"
 rule ont_guppy:
