@@ -4,3 +4,7 @@ __default__:
 ont_guppy:
   - "-q gpu"
   - "-gpu 'num=1'"
+
+ont_guppy_epinano:
+  - "-q gpu"
+  - "-gpu 'num=1'"
