@@ -114,7 +114,7 @@ nanocompore_postprocess:
 
 tombo_preprocess:
     threads: 4
-    mem_mb: 1000
+    mem_mb: 4000
     opt: ""
 
 tombo_level_sample_compare:
