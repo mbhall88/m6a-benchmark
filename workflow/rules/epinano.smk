@@ -13,11 +13,14 @@ module_name = "epinano"
 scattergather:
     epinano_bam_split=10,
 
-
+# not using v3.1.5 as stated in docs
+# this is based on the discussion at https://github.com/novoalab/EpiNano/issues/79
+# v3.1.5 doesn't seem to be able to load the rlmF data but recent versions can
+# there also doesn't seem to be a change to dRNA models since v3.1.5
 if config["gpu_acceleration"]:
-    guppy_container = "library://aleg/default/ont_guppy:gpu-3.1.5"
+    guppy_container = "docker://quay.io/mbhall88/guppy-gpu:5.0.16"
 else:
-    guppy_container = "library://aleg/default/ont_guppy:cpu-3.1.5"
+    guppy_container = "docker://quay.io/mbhall88/guppy-cpu:5.0.16"
 
 rule_name = "ont_guppy_epinano"
 
