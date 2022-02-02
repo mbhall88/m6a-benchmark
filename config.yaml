@@ -200,7 +200,7 @@ mines_postprocess:
 ont_guppy_epinano:
   threads: 4
   mem_mb:  6000
-  opt:     "-c rna_r9.4.1_70bps_hac.cfg --recursive --disable_pings --calib_detect --num_callers 8 --gpu_runners_per_device 1 --device cuda:all:100% "
+  opt:     "-c rna_r9.4.1_70bps_hac.cfg --recursive --disable_pings --calib_detect --num_callers 8 --gpu_runners_per_device 1 --device cuda:all:100% --disable_qscore_filtering"
 
 merge_fastq_epinano:
   threads: 1
