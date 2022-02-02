@@ -209,7 +209,7 @@ merge_fastq_epinano:
 
 minimap2_align_epinano:
   threads: 4
-  mem_mb:  1000
+  mem_mb:  2000
   opt:     "-a --MD -x map-ont"
 
 alignmemt_prefilter_epinano:
