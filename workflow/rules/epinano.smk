@@ -267,10 +267,10 @@ rule epinano_variants:
         "library://aleg/default/epinano:1.2.0"
     shell:
         """
-        Epinano_Variants -R {input.fasta} -b {input.bam} -n {threads} -T t -s /usr/EpiNano/misc/sam2tsv.jar
+        Epinano_Variants -R {input.fasta} -b {input.bam} -n {threads} -T t -s /usr/EpiNano/misc/sam2tsv.jar >{log} 2>&1
         # This mv is needed because Epinano_Variants and Slide_Variants.py don't allow changing the output path
-        mv $(dirname {input.bam})/{wildcards.cond}.{wildcards.scatteritem}.plus_strand.per.site.csv $(dirname {output.variants})/{wildcards.cond}.{wildcards.scatteritem}.plus_strand
-        python /usr/EpiNano/misc/Slide_Variants.py $(dirname {output.variants})/{wildcards.cond}.{wildcards.scatteritem}.plus_strand 5
+        mv $(dirname {input.bam})/{wildcards.cond}.{wildcards.scatteritem}.plus_strand.per.site.csv $(dirname {output.variants})/{wildcards.cond}.{wildcards.scatteritem}.plus_strand >>{log} 2>&1
+        python /usr/EpiNano/misc/Slide_Variants.py $(dirname {output.variants})/{wildcards.cond}.{wildcards.scatteritem}.plus_strand 5 >>{log} 2>&1
         """
 
 
