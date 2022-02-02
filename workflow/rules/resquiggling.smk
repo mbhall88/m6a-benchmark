@@ -9,7 +9,7 @@ from os.path import join
 module_name = "resquiggling"
 
 if config["gpu_acceleration"]:
-    f5c_container = "library://aleg/default/f5c:gpu-0.6"
+    f5c_container = "docker://quay.io/mbhall88/f5c-gpu:0.6"
 else:
     f5c_container = "library://aleg/default/f5c:cpu-0.6"
 
