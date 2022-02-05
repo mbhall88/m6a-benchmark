@@ -57,7 +57,7 @@ rule f5c_eventalign:
     params:
         opt=get_opt(config, rule_name),
     resources:
-        mem_mb=get_mem(config, rule_name),
+        mem_mb=lambda wildcards, attempt: attempt *  get_mem(config, rule_name),
     container:
         f5c_container
     shell:
