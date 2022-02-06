@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
-##### Imports #####
 from snakemake.shell import shell
 import tempfile
 
-##### RUN SCRIPT FUNCTION #####
 input_fast5_dir = snakemake.input.fast5_dir
 fastq = snakemake.input.fastq
 fasta = snakemake.input.fasta
@@ -16,13 +12,25 @@ threads = snakemake.threads
 with tempfile.TemporaryDirectory() as temp_dir:
 
     shell("echo '## fast5_subset ##' > {log}")
-    shell("fast5_subset -t {threads} -i {input_fast5_dir} -s {temp_dir} -l {selected_reads_fn} -r &>> {log}")
+    # have to use gzip compression here as it defaults to the existing format, which
+    # # for the rlmF data is vbz and that causes issues later in resquiggle
+    shell(
+        "fast5_subset -t {threads} -i {input_fast5_dir} -s {temp_dir} "
+        "-l {selected_reads_fn} -r -c gzip &>> {log}"
+    )
 
     shell("echo '## multi_to_single_fast5 ##' >> {log}")
-    shell("multi_to_single_fast5 -t {threads} -i {temp_dir} -s {output_fast5_dir} &>> {log}")
+    shell(
+        "multi_to_single_fast5 -t {threads} -i {temp_dir} -s {output_fast5_dir} &>> {log}"
+    )
 
 shell("echo '## tombo preprocess annotate_raw_with_fastqs ##' >> {log}")
-shell("tombo preprocess annotate_raw_with_fastqs --fast5-basedir {output_fast5_dir} --fastq-filenames {fastq} --overwrite --processes {threads} &>> {log}")
+shell(
+    "tombo preprocess annotate_raw_with_fastqs --fast5-basedir {output_fast5_dir} "
+    "--fastq-filenames {fastq} --overwrite --processes {threads} &>> {log}"
+)
 
 shell("echo '## tombo resquiggle ##' >> {log}")
-shell("tombo resquiggle --rna --overwrite --processes {threads} {output_fast5_dir} {fasta} &>> {log}")
+shell(
+    "tombo resquiggle --rna --overwrite --processes {threads} {output_fast5_dir} {fasta} &>> {log}"
+)
