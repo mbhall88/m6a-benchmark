@@ -54,7 +54,7 @@ rule tombo_level_sample_compare:
         opt=get_opt(config, rule_name),
         bn=join("results", module_name, rule_name, "results"),
     resources:
-        mem_mb=get_mem(config, rule_name),
+        mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
     container:
         "library://aleg/default/tombo:1.5.1"
     shell:

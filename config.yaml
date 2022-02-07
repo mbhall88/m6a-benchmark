@@ -118,7 +118,7 @@ tombo_preprocess:
 
 tombo_level_sample_compare:
   threads: 4
-  mem_mb:  1000
+  mem_mb:  4000
   opt:     "--minimum-test-reads 30 --fishers-method-context 2 --statistic-type ks --store-p-value"
 
 tombo_postprocess:
@@ -169,7 +169,7 @@ eligos2_postprocess:
 
 tombo_de_novo:
   threads: 4
-  mem_mb:  2000
+  mem_mb:  4000
   opt:     "--rna --minimum-test-reads 30 --fishers-method-context 2"
 
 tombo_de_novo_text_output:
