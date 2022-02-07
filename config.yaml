@@ -169,7 +169,7 @@ eligos2_postprocess:
 
 tombo_de_novo:
   threads: 4
-  mem_mb:  1000
+  mem_mb:  2000
   opt:     "--rna --minimum-test-reads 30 --fishers-method-context 2"
 
 tombo_de_novo_text_output:
