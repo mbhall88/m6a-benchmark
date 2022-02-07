@@ -25,7 +25,7 @@ rule tombo_preprocess:
     params:
         opt=get_opt(config, rule_name),
     resources:
-        mem_mb=lambda wildcards, attempt: attempt * get_mem(config, rule_name),
+        mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
     container:
         "library://aleg/default/tombo:1.5.1"
     script:
