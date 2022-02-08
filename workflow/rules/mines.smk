@@ -122,7 +122,7 @@ rule mines_cdna:
     container:
         "library://aleg/default/mines:latest"
     shell:
-        "cDNA_MINES --kmer_models {input.kmer_models} --fraction_modified {input.fraction} --coverage {input.coverage} --ref {input.fasta} --output {output.res_bed} &> {log}"
+        "python workflow/scripts/cDNA_MINES.py --kmer_models {input.kmer_models} --fraction_modified {input.fraction} --coverage {input.coverage} --ref {input.fasta} --output {output.res_bed} &> {log}"
 
 
 rule_name = "mines_postprocess"
