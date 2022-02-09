@@ -118,7 +118,7 @@ tombo_preprocess:
 
 tombo_level_sample_compare:
   threads: 4
-  mem_mb:  4000
+  mem_mb:  16000
   opt:     "--minimum-test-reads 30 --fishers-method-context 2 --statistic-type ks --store-p-value"
 
 tombo_postprocess:
