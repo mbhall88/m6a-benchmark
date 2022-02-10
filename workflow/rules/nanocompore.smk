@@ -36,7 +36,7 @@ rule nanocompore_eventalign_collapse:
     params:
         opt=get_opt(config, rule_name),
     resources:
-        mem_mb=get_mem(config, rule_name),
+        mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
     container:
         "library://aleg/default/nanocompore:1.0.3"
     shell:
@@ -81,7 +81,7 @@ rule nanocompore_sampcomp:
     params:
         opt=get_opt(config, rule_name),
     resources:
-        mem_mb=get_mem(config, rule_name),
+        mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
     container:
         "library://aleg/default/nanocompore:1.0.3"
     script:
@@ -108,7 +108,7 @@ rule nanocompore_postprocess:
     params:
         opt=get_opt(config, rule_name),
     resources:
-        mem_mb=get_mem(config, rule_name),
+        mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
     container:
         "library://aleg/default/metacompore_python:3.8.6"
     script:
