@@ -13,6 +13,7 @@ module_name = "epinano"
 scattergather:
     epinano_bam_split=10,
 
+
 # not using v3.1.5 as stated in docs
 # this is based on the discussion at https://github.com/novoalab/EpiNano/issues/79
 # v3.1.5 doesn't seem to be able to load the rlmF data but recent versions can
@@ -223,14 +224,12 @@ rule epinano_splitbam:
     input:
         bam=rules.alignmemt_merge_epinano.output.bam,
     output:
-        temp(
-            scatter.epinano_bam_split(
-                join(
-                    "results",
-                    module_name,
-                    rule_name,
-                    "{{cond}}_split/{{cond}}.{scatteritem}.bam",
-                )
+        scatter.epinano_bam_split(
+            join(
+                "results",
+                module_name,
+                rule_name,
+                "{{cond}}_split/{{cond}}.{scatteritem}.bam",
             )
         ),
     container:
@@ -255,13 +254,11 @@ rule epinano_variants:
         fasta=rules.get_transcriptome.output.fasta,
         picard_dict=rules.generate_transcriptome_picard_index.output.picard_dict,
     output:
-        variants=temp(
-            join(
-                "results",
-                module_name,
-                rule_name,
-                "{cond}.{scatteritem}.plus_strand.per_site.5mer.csv",
-            )
+        variants=join(
+            "results",
+            module_name,
+            rule_name,
+            "{cond}.{scatteritem}.plus_strand.per_site.5mer.csv",
         ),
     log:
         join("logs", module_name, rule_name, "{cond}.{scatteritem}.log"),
@@ -286,13 +283,11 @@ rule epinano_filter_rrach_variants:
     input:
         variants=rules.epinano_variants.output.variants,
     output:
-        filteredvariants=temp(
-            join(
-                "results",
-                module_name,
-                rule_name,
-                "{cond}.{scatteritem}.plus_strand.per_site.5mer.csv.filtered",
-            )
+        filteredvariants=join(
+            "results",
+            module_name,
+            rule_name,
+            "{cond}.{scatteritem}.plus_strand.per_site.5mer.csv.filtered",
         ),
     log:
         join("logs", module_name, rule_name, "{cond}.{scatteritem}.log"),
@@ -343,13 +338,11 @@ rule epinano_predict:
     input:
         variants=rules.epinano_gather_variants.output.filteredvariants,
     output:
-        predictions=temp(
-            join(
-                "results",
-                module_name,
-                rule_name,
-                "{cond}.q3.mis3.del3.MODEL.rrach.q3.mis3.del3.linear.dump.csv",
-            )
+        predictions=join(
+            "results",
+            module_name,
+            rule_name,
+            "{cond}.q3.mis3.del3.MODEL.rrach.q3.mis3.del3.linear.dump.csv",
         ),
     log:
         join("logs", module_name, rule_name, "{cond}.log"),
@@ -391,7 +384,7 @@ rule epinano_delta_variants:
     container:
         "library://aleg/default/epinano:1.2.0"
     shell:
-        "python /usr/EpiNano/misc/Epinano_make_delta.py {input.test_variants} {input.control_variants} {params.opt[min_cov]} 5 > {output.delta}"
+        "python /usr/EpiNano/misc/Epinano_make_delta.py {input.test_variants} {input.control_variants} {params.opt[min_cov]} 5 > {output.delta} 2> {log}"
 
 
 rule_name = "epinano_delta_predict"
@@ -401,13 +394,11 @@ rule epinano_delta_predict:
     input:
         delta_variants=rules.epinano_delta_variants.output.delta,
     output:
-        predictions=temp(
-            join(
-                "results",
-                module_name,
-                rule_name,
-                "test_control.DeltaMis3.DeltaDel3.DeltaQ3.MODEL.rrach.deltaQ3.deltaMis3.deltaDel3.linear.dump.csv",
-            )
+        predictions=join(
+            "results",
+            module_name,
+            rule_name,
+            "test_control.DeltaMis3.DeltaDel3.DeltaQ3.MODEL.rrach.deltaQ3.deltaMis3.deltaDel3.linear.dump.csv",
         ),
     log:
         join("logs", module_name, rule_name, "delta_variants.log"),
@@ -419,7 +410,7 @@ rule epinano_delta_predict:
     container:
         "library://aleg/default/epinano:1.2.0"
     shell:
-        "Epinano_Predict -o $(dirname {output.predictions})/test_control -M /usr/EpiNano/models/rrach.deltaQ3.deltaMis3.deltaDel3.linear.dump -p {input.delta_variants} -cl 7,12,22"
+        "Epinano_Predict -o $(dirname {output.predictions})/test_control -M /usr/EpiNano/models/rrach.deltaQ3.deltaMis3.deltaDel3.linear.dump -p {input.delta_variants} -cl 7,12,22 2> {log}"
 
 
 rule_name = "epinano_postprocess"
@@ -457,7 +448,7 @@ rule epinano_postprocess:
     container:
         "library://aleg/default/epinano:1.2.0"
     shell:
-        "touch {output.res_tsv}"
+        "touch {output.res_tsv} 2> {log}"
 
 
 # python ../../Epinano_Variants.py -R ref.fa -b wt.bam -n 6 -T t -s ../../misc/sam2tsv.jar
