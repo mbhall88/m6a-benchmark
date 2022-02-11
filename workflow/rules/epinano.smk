@@ -328,7 +328,7 @@ rule epinano_gather_variants:
     container:
         "library://aleg/default/epinano:1.2.0"
     shell:
-        "cat {input} | awk 'NR==1 || !/^#/' > {output}"
+        "(cat {input} | awk 'NR==1 || !/^#/') > {output} 2> {log}"
 
 
 rule_name = "epinano_predict"
@@ -352,7 +352,7 @@ rule epinano_predict:
     container:
         "library://aleg/default/epinano:1.2.0"
     shell:
-        "Epinano_Predict -o $(dirname {output.predictions})/{wildcards.cond} -M /usr/EpiNano/models/rrach.q3.mis3.del3.linear.dump -p {input.variants} -cl 8,13,23"
+        "Epinano_Predict -o $(dirname {output.predictions})/{wildcards.cond} -M /usr/EpiNano/models/rrach.q3.mis3.del3.linear.dump -p {input.variants} -cl 8,13,23 2> {log}"
 
 
 rule_name = "epinano_delta_variants"
