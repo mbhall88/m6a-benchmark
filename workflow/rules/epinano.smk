@@ -235,8 +235,10 @@ rule epinano_splitbam:
         ),
     container:
         "library://aleg/default/pybiotools:0.2.7"
+    log:
+        join("logs", module_name, rule_name, "{cond}.{scatteritem}.log"),
     shell:
-        "pyBioTools Alignment Split --index -i {input.bam} -n 10 --output_fn_list {output}"
+        "pyBioTools Alignment Split --index -i {input.bam} -n 10 --output_fn_list {output} &> {log}"
 
 
 rule_name = "epinano_variants"
