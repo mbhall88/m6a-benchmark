@@ -13,7 +13,7 @@ tombo:             True
 differr:           True
 eligos2:           True
 mines:             True
-xpore:             False
+xpore:             True
 epinano:           True
 
 ##### Individual rules configuration #####
@@ -86,10 +86,20 @@ f5c_index:
 
 f5c_eventalign:
   threads: 8
-  mem_mb:  32000
+  mem_mb:  8000
   opt:     "-x desktop-high --rna --samples --signal-index --print-read-names --scale-events --verbose 2"
 
+# ===========
+# XPORE
+# ===========
+xpore_dataprep:
+  threads: 8
+  mem_mb:  8000
+  opt:     "--readcount_max 1000000"
+
+# ===========
 # Nanocompore parameters
+# ===========
 
 nanocompore_eventalign_collapse:
   threads: 4
