@@ -13,9 +13,7 @@ include: "workflow/rules/common.smk"
 ##### load config and sample sheets #####
 
 logger.info("Loading and checking configuration file")
-config = config_load_validate(
-    configfile="config.yaml", schema="workflow/schemas/config.schema.yaml"
-)
+config = config_load_validate("config.yaml", "workflow/schemas/config.schema.yaml")
 
 logger.info("Loading and checking sample file")
 samples_df = samples_load_validate(
@@ -61,7 +59,6 @@ target_files.extend(
 )
 
 if config.get("quality_control", None):
-    logger.info("Defining target files for `quality_control` rules")
     target_files.extend(
         expand(
             join("results", "quality_control", "pycoQC", "pycoQC_{cond}_{rep}.json"),
@@ -78,7 +75,6 @@ if config.get("quality_control", None):
     )
 
 if config.get("nanocompore", None):
-    logger.info("Defining target files for `nanocompore` rules")
     target_files.append(
         join("results", "final", "nanocompore_results_GMM_context_0.tsv")
     )
@@ -99,19 +95,15 @@ if config.get("nanocompore", None):
     )
 
 if config.get("tombo", None):
-    logger.info("Defining target files for `tombo` rules")
     target_files.append(join("results", "final", "tombo_results.tsv"))
 
 if config.get("differr", None):
-    logger.info("Defining target files for `differr` rules")
     target_files.append(join("results", "final", "differr_results.tsv"))
 
 if config.get("eligos2", None):
-    logger.info("Defining target files for `eligos2` rules")
     target_files.append(join("results", "final", "eligos2_results.tsv"))
 
 if config.get("mines", None):
-    logger.info("Defining target files for `mines` rules")
     target_files.append(join("results", "final", "mines_results.tsv"))
 
 if config.get("xpore", None):
