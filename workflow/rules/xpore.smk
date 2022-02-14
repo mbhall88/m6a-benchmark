@@ -1,7 +1,8 @@
 xpore_img = "docker://quay.io/biocontainers/xpore:2.1--pyh5e36f6f_0"
 module_name = "xpore"
-rule_name = "xpore_eventalign"
-# we do an extra eventalign as xpore requires some different options to other tools
+rule_name = "xpore_dataprep"
+
+
 rule xpore_dataprep:
     input:
         eventalign=rules.f5c_eventalign.output.tsv,
