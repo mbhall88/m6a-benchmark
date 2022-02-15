@@ -1,5 +1,7 @@
 xpore_img = "docker://quay.io/biocontainers/xpore:2.1--pyh5e36f6f_0"
 module_name = "xpore"
+rule_name = "xpore_eventalign"
+
 
 # we have to do an extra eventalign because xpore needs read_index instead of read_name
 rule xpore_eventalign:
