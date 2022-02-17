@@ -79,6 +79,6 @@ rule xpore_config:
     log:
         join("logs", module_name, rule_name + ".log"),
     conda:
-        f"../envs/{rule_name}.yaml"
+        f"../envs/xpore_config.yaml"
     script:
-        f"../scripts/{rule_name}.py"
+        f"../scripts/xpore_config.py"
