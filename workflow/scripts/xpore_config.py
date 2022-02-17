@@ -1,12 +1,12 @@
 import sys
-sys.stderr = open(snakemake.log, "w")
+sys.stderr = open(snakemake.log[0], "w")
 
 from collections import defaultdict
 from pathlib import Path
 
 import yaml
 
-data = defaultdict()
+data = defaultdict(dict)
 for p in map(Path, snakemake.input.jsons):
     cond, rep = p.parent.name.split("_")
     data[cond][rep] = p.resolve()
