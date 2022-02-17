@@ -82,3 +82,23 @@ rule xpore_config:
         f"../envs/xpore_config.yaml"
     script:
         f"../scripts/xpore_config.py"
+
+
+rule_name = "xpore_diffmod"
+
+
+rule xpore_diffmod:
+    input:
+        configuration=rules.xpore_config.output.configuration,
+    output:
+        table=join("results", module_name, rule_name, "diffmod.table"),
+        log=join("results", module_name, rule_name, "diffmod.log"),
+    log:
+        join("logs", module_name, rule_name + ".log"),
+    threads: get_threads(config, rule_name)
+    resources:
+        mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
+    container:
+        xpore_img
+    shell:
+        "xpore diffmod --config {input.configuration} --n_processes {threads} 2> {log}"

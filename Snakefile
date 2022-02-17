@@ -107,7 +107,7 @@ if config.get("mines", None):
     target_files.append(join("results", "final", "mines_results.tsv"))
 
 if config.get("xpore", None):
-    target_files.append(join("results", "xpore", "xpore_config", "config.yaml"))
+    target_files.append(join("results", "xpore", "xpore_diffmod", "diffmod.table"))
 
 if config.get("epinano", None):
     target_files.append(join("results", "final", "epinano_results.tsv"))

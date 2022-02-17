@@ -106,6 +106,10 @@ xpore_config:
   readcount_min: 15
   readcount_max: 1000000
 
+xpore_diffmod:
+  threads: 8
+  mem_mb:  8000
+
 # ===========
 # Nanocompore parameters
 # ===========
