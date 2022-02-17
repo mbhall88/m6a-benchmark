@@ -34,18 +34,26 @@ rule xpore_dataprep:
     input:
         eventalign=rules.xpore_eventalign.output.tsv,
     output:
-        outdir=directory(join("results", module_name, rule_name, "{cond}_{rep}")),
+        data=multiext(
+            f"results/{module_name}/{rule_name}/{{cond}}_{{rep}}/data",
+            ".index",
+            ".json",
+            ".log",
+            ".readcount",
+        ),
+        idx=join("results", module_name, rule_name, "{cond}_{rep}", "eventalign.index"),
     log:
         join("logs", module_name, rule_name, "{cond}_{rep}.log"),
     threads: get_threads(config, rule_name)
     params:
         opt=get_opt(config, rule_name),
+        outdir=lambda wildcards, output: Path(output.idx).parent,
     resources:
         mem_mb=lambda wildcards, attempt, mem=get_mem(config, rule_name): attempt * mem,
     container:
         xpore_img
     shell:
         """
-        xpore dataprep --eventalign {input.eventalign} --n_processes {threads} \
-            --out_dir {output.outdir} 2> {log}
+        xpore dataprep {params.opt} --eventalign {input.eventalign} \
+            --n_processes {threads} --out_dir {params.outdir} 2> {log}
         """
