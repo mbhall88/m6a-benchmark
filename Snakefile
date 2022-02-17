@@ -107,8 +107,7 @@ if config.get("mines", None):
     target_files.append(join("results", "final", "mines_results.tsv"))
 
 if config.get("xpore", None):
-    for cond, rep in product(condition_list, replicates_list):
-        target_files.append(join("results", "xpore", "xpore_dataprep", f"{cond}_{rep}"))
+    target_files.append(join("results", "xpore", "xpore_config", "config.yaml"))
 
 if config.get("epinano", None):
     target_files.append(join("results", "final", "epinano_results.tsv"))

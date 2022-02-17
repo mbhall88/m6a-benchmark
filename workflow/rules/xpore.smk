@@ -57,3 +57,28 @@ rule xpore_dataprep:
         xpore dataprep {params.opt} --eventalign {input.eventalign} \
             --n_processes {threads} --out_dir {params.outdir} 2> {log}
         """
+
+
+rule_name = "xpore_config"
+
+
+rule xpore_config:
+    input:
+        jsons=expand(
+            f"results/{module_name}/xpore_dataprep/{{cond}}_{{rep}}/data.json",
+            cond=condition_list,
+            rep=replicates_list,
+        ),
+    output:
+        configuration=join("results", module_name, rule_name, "config.yaml"),
+    params:
+        readcount_min=config[rule_name]["readcount_min"],
+        readcount_max=config[rule_name]["readcount_max"],
+        outdir=lambda wildcards, output: Path(output.configuration).parent.parent
+        / "xpore_diffmod",
+    log:
+        join("logs", module_name, rule_name + ".log"),
+    conda:
+        f"../envs/{rule_name}.yaml"
+    script:
+        f"../scripts/{rule_name}.py"

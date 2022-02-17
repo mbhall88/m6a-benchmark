@@ -102,6 +102,10 @@ xpore_dataprep:
   mem_mb:  8000
   opt:     "--readcount_max 1000000"
 
+xpore_config:
+  readcount_min: 15
+  readcount_max: 1000000
+
 # ===========
 # Nanocompore parameters
 # ===========
