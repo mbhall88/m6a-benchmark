@@ -9,14 +9,14 @@ import yaml
 data = defaultdict(dict)
 for p in map(Path, snakemake.input.jsons):
     cond, rep = p.parent.name.split("_")
-    data[cond][rep] = p.resolve()
+    data[cond][rep] = str(p.resolve())
 
 criteria = {
     "readcount_min": snakemake.params.readcount_min,
     "readcount_max": snakemake.params.readcount_max,
 }
 
-yml = {"out": snakemake.params.outdir, "data": data, "criteria": criteria}
+yml = {"out": str(snakemake.params.outdir), "data": dict(data), "criteria": criteria}
 
 with open(snakemake.output.configuration, "w") as ofp:
     yaml.dump(yml, ofp, default_flow_style=False)
